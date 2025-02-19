@@ -21,4 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "VideoPlayer"
 include(":app")
- 
+include(":ui_kit")
+include(":common")
+include(":resources")
+include(":feature_playlist")
