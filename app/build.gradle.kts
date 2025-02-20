@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.kapt)
 }
 
 android {
@@ -50,6 +52,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
@@ -61,5 +66,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(project(":ui_kit"))
+    implementation(project(":common"))
     implementation(project(":feature_playlist"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
 }
