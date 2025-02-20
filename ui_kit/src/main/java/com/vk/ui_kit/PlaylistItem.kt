@@ -29,7 +29,7 @@ import com.vk.resources.theme.VideoPlayerTheme
 fun PlaylistItem(
     modifier: Modifier = Modifier,
     videoItem: VideoItem,
-    onClick: (Long) -> Unit = {}
+    onClick: (Int) -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -78,7 +78,7 @@ fun PlayListItemPreview() {
     VideoPlayerTheme {
         PlaylistItem(
             videoItem = VideoItem(
-                id = 1L,
+                id = 1,
                 title = "YouTube video",
                 duration = "24:00",
                 previewUrl = null
