@@ -28,6 +28,7 @@ class VideoPlaylistViewModel @Inject constructor(
     override fun handleEvent(event: VideoPlaylistContract.Event) {
         when(event) {
             is VideoPlaylistContract.Event.OnVideoClicked -> { saveVideoPath(event.videoUrl) }
+            is VideoPlaylistContract.Event.OnReload -> { loadVideo() }
         }
     }
 
