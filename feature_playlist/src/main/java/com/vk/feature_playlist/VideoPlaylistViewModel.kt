@@ -5,11 +5,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.vk.common.presentation.BaseViewModel
+import com.vk.domain.usecase.SaveSessionUseCase
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class VideoPlaylistViewModel @Inject constructor(
-    private val getPlaylistUseCase: GetPlaylistUseCase
+    private val getPlaylistUseCase: GetPlaylistUseCase,
+    private val saveSessionUseCase: SaveSessionUseCase,
 ): BaseViewModel<VideoPlaylistContract.Event, VideoPlaylistContract.State, VideoPlaylistContract.Effect>() {
 
     init {
@@ -24,6 +26,12 @@ class VideoPlaylistViewModel @Inject constructor(
     override fun createInitialState() = VideoPlaylistContract.State()
 
     override fun handleEvent(event: VideoPlaylistContract.Event) {
-        TODO("Not yet implemented")
+        when(event) {
+            is VideoPlaylistContract.Event.OnVideoClicked -> { saveVideoPath(event.videoUrl) }
+        }
+    }
+
+    private fun saveVideoPath(videoUrl: String) = viewModelScope.launch {
+        saveSessionUseCase.invoke(SaveSessionUseCase.Params(videoUrl))
     }
 }

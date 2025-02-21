@@ -7,7 +7,7 @@ import com.vk.domain.model.Video
 
 class VideoPlaylistContract {
     sealed class Event : UiEvent {
-        data class OnVideoClicked(val videoId: Int) : Event()
+        data class OnVideoClicked(val videoUrl: String) : Event()
     }
 
     data class State(

@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.vk.resources.theme.VideoPlayerTheme
 import com.vk.ui_kit.PlaylistItem
 import com.vk.ui_kit.VideoItem
@@ -19,7 +20,8 @@ import com.vk.ui_kit.VideoItem
 @Composable
 fun VideoPlaylistScreen(
     modifier: Modifier = Modifier,
-    viewModel: VideoPlaylistViewModel
+    viewModel: VideoPlaylistViewModel,
+    navController: NavController
 ) {
 
     val state by viewModel.uiState.collectAsState()
@@ -39,8 +41,13 @@ fun VideoPlaylistScreen(
                         id = item.id,
                         title = item.title,
                         duration = item.duration,
-                        previewUrl = item.previewUrl
-                    )
+                        previewUrl = item.previewUrl,
+                        videoUrl = item.videoUrl
+                    ),
+                    onClick = {
+                        viewModel.handleEvent(VideoPlaylistContract.Event.OnVideoClicked(item.videoUrl))
+                        navController.navigate("player_screen")
+                    }
                 )
             }
         }

@@ -7,5 +7,6 @@ fun VideoDto.toVideo() = Video(
     id = this.id,
     title = this.title,
     duration = this.duration,
-    previewUrl = this.thumbnailUrl
+    previewUrl = this.thumbnailUrl,
+    videoUrl = this.videoUrl
 )
