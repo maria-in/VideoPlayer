@@ -35,7 +35,12 @@ fun VideoPlaylistScreen(
             items(state.videoList) { item ->
 
                 PlaylistItem(
-                    videoItem = VideoItem(id = item.id, title = item.title, duration = item.duration)
+                    videoItem = VideoItem(
+                        id = item.id,
+                        title = item.title,
+                        duration = item.duration,
+                        previewUrl = item.previewUrl
+                    )
                 )
             }
         }

@@ -6,5 +6,6 @@ import com.vk.domain.model.Video
 fun VideoDto.toVideo() = Video(
     id = this.id,
     title = this.title,
-    duration = this.duration
+    duration = this.duration,
+    previewUrl = this.thumbnailUrl
 )

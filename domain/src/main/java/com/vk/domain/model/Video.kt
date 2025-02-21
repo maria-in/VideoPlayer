@@ -4,4 +4,5 @@ data class Video(
     val id: Int,
     val title: String,
     val duration: String,
+    val previewUrl: String
 )

@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import com.vk.resources.theme.LocalDimension
 import com.vk.resources.theme.LocalTextDim
@@ -44,6 +45,7 @@ fun PlaylistItem(
                 .size(LocalDimension.current.spaceSize58)
                 .clip(RoundedCornerShape(LocalDimension.current.spaceSize14))
                 .background(MaterialTheme.colorScheme.tertiary),
+            contentScale = ContentScale.Crop,
             model = ImageRequest.Builder(LocalContext.current)
                 .data(videoItem.previewUrl)
                 .crossfade(true)
