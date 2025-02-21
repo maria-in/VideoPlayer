@@ -11,6 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vk.feature_playlist.VideoPlaylistScreen
 import com.vk.feature_playlist.VideoPlaylistViewModel
+import com.vk.feature_videoplayer.presentaion.PlayerScreen
+import com.vk.feature_videoplayer.presentaion.PlayerScreenViewModel
 
 @Composable
 fun Navigation(modifier: Modifier = Modifier) {
@@ -28,6 +30,19 @@ fun Navigation(modifier: Modifier = Modifier) {
             val viewModel = hiltViewModel<VideoPlaylistViewModel>()
 
             VideoPlaylistScreen(
+                modifier = modifier,
+                viewModel = viewModel,
+                navController = navController
+            )
+        }
+
+        composable(
+            route = "player_screen",
+            enterTransition = { fadeIn(animationSpec = tween(500)) }
+        ) {
+            val viewModel = hiltViewModel<PlayerScreenViewModel>()
+
+            PlayerScreen(
                 modifier = modifier,
                 viewModel = viewModel
             )

@@ -83,7 +83,8 @@ fun PlayListItemPreview() {
                 id = 1,
                 title = "YouTube video",
                 duration = "24:00",
-                previewUrl = null
+                previewUrl = null,
+                videoUrl = ""
             )
         )
     }
