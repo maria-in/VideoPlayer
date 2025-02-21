@@ -27,12 +27,15 @@ class VideoPlaylistViewModel @Inject constructor(
 
     override fun handleEvent(event: VideoPlaylistContract.Event) {
         when(event) {
-            is VideoPlaylistContract.Event.OnVideoClicked -> { saveVideoPath(event.videoUrl) }
+            is VideoPlaylistContract.Event.OnVideoClicked -> {
+                saveVideoPath(event.videoUrl)
+            }
             is VideoPlaylistContract.Event.OnReload -> { loadVideo() }
         }
     }
 
     private fun saveVideoPath(videoUrl: String) = viewModelScope.launch {
         saveSessionUseCase.invoke(SaveSessionUseCase.Params(videoUrl))
+        setEffect { VideoPlaylistContract.Effect.NavigateToVideoScreen }
     }
 }

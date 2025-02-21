@@ -7,8 +7,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -16,6 +18,8 @@ import com.vk.domain.model.Video
 import com.vk.resources.theme.VideoPlayerTheme
 import com.vk.ui_kit.PlaylistItem
 import com.vk.ui_kit.VideoItem
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun VideoPlaylistScreen(
@@ -24,6 +28,17 @@ fun VideoPlaylistScreen(
     navController: NavController
 ) {
     val state by viewModel.uiState.collectAsState()
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        viewModel.effect.onEach {
+            when(it) {
+                is VideoPlaylistContract.Effect.NavigateToVideoScreen -> {
+                    navController.navigate("player_screen")
+                }
+            }
+        }.launchIn(scope)
+    }
 
     VideoPlaylistScreen(
         modifier = modifier,
@@ -31,7 +46,6 @@ fun VideoPlaylistScreen(
         videoList = state.videoList,
         onItemClick = { videoUrl ->
             viewModel.handleEvent(VideoPlaylistContract.Event.OnVideoClicked(videoUrl))
-            navController.navigate("player_screen")
         },
         onReload = { viewModel.handleEvent(VideoPlaylistContract.Event.OnReload) }
     )

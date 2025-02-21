@@ -2,7 +2,7 @@ package com.vk.feature_videoplayer.di
 
 import android.content.Context
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.session.MediaSession
+import com.vk.feature_videoplayer.service.VideoServiceHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,8 +26,6 @@ object VideoModule {
 
     @Provides
     @Singleton
-    fun provideMediaSession(
-        @ApplicationContext context: Context,
-        player: ExoPlayer,
-    ): MediaSession = MediaSession.Builder(context, player).build()
+    fun provideAudioServiceHandler(exoPlayer: ExoPlayer): VideoServiceHandler =
+        VideoServiceHandler(exoPlayer)
 }

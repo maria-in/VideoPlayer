@@ -16,5 +16,7 @@ class VideoPlaylistContract {
         val videoList: List<Video> = emptyList()
     ) : UiState
 
-    sealed class Effect : UiEffect
+    sealed class Effect : UiEffect {
+        data object NavigateToVideoScreen: Effect()
+    }
 }
