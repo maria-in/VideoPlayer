@@ -3,11 +3,16 @@ package com.vk.feature_videoplayer.service
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class VideoServiceHandler @Inject constructor(
     private val exoPlayer: ExoPlayer
 ) : Player.Listener {
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
 
     init {
         exoPlayer.addListener(this)
@@ -17,10 +22,8 @@ class VideoServiceHandler @Inject constructor(
         return exoPlayer
     }
 
-    //TODO: add loading
-    var isLoading: Boolean = true
     override fun onPlaybackStateChanged(playbackState: Int) {
-        isLoading = playbackState == Player.STATE_BUFFERING
+        _isLoading.value = playbackState == Player.STATE_BUFFERING
     }
 
     fun setMediaItem(mediaItem: MediaItem) {

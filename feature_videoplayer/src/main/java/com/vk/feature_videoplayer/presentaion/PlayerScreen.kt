@@ -47,10 +47,6 @@ fun PlayerScreen(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        if (state.isLoading) {
-            CircularProgressIndicator()
-        }
-
         AndroidView(
             modifier = Modifier
                 .fillMaxWidth()
@@ -75,5 +71,9 @@ fun PlayerScreen(
                 }
             }
         )
+
+        if (state.isLoading) {
+            CircularProgressIndicator()
+        }
     }
 }

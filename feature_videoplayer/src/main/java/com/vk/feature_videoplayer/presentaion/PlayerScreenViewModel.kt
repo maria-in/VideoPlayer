@@ -10,6 +10,8 @@ import com.vk.common.presentation.BaseViewModel
 import com.vk.domain.usecase.GetSessionUseCase
 import com.vk.feature_videoplayer.service.VideoServiceHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,12 +25,15 @@ class PlayerScreenViewModel @Inject constructor(
     override fun createInitialState() = PlayerScreenContract.State(exoPlayer = audioServiceHandler.getPlayer())
 
     init {
+        audioServiceHandler.isLoading.onEach {
+            setState { copy(isLoading = it) }
+        }.launchIn(viewModelScope)
+
         loadVideo()
     }
 
     private fun loadVideo() = viewModelScope.launch {
         getSessionUseCase.invoke(GetSessionUseCase.Params).collect {
-            Log.println(Log.DEBUG, "IIII", it.toString())
             it?.toUri()?.let { videoUri -> playVideo(videoUri) }
         }
     }
