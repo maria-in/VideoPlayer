@@ -45,8 +45,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.kotlinx.serialization)
     implementation(libs.logging.interceptor)
-//    implementation(libs.converter.moshi)
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation(libs.converter.gson)
     implementation(libs.retrofit.adapter)
 
     implementation(libs.dagger.hilt.android)

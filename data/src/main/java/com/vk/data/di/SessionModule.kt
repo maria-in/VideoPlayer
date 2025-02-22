@@ -1,6 +1,6 @@
 package com.vk.data.di
 
-import com.vk.data.player.datasource.local.SessionCacheServiceImpl
+import com.vk.data.player.repository.SessionCacheServiceImpl
 import com.vk.domain.repository.SessionCacheService
 import dagger.Binds
 import dagger.Module

@@ -1,4 +1,4 @@
-package com.vk.data.player.datasource.local
+package com.vk.data.player.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
