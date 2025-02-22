@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.vk.data.player.datasource.local.model.VideoItemEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface VideoPlayerDao {
@@ -15,5 +14,5 @@ interface VideoPlayerDao {
     fun clearCache()
 
     @Query("SELECT * FROM video_item_table")
-    fun getVideoPlaylist(): Flow<List<VideoItemEntity>>
+    fun getVideoPlaylist(): List<VideoItemEntity>
 }

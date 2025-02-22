@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">VideoPlayer</string>
+    <string name="no_internet_error">No internet. Please, connect</string>
+    <string name="other_error">Something went wrong. Please, try later</string>
 </resources>

@@ -1,9 +1,14 @@
 package com.vk.feature_playlist
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
@@ -11,7 +16,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.vk.domain.model.Video
@@ -20,6 +27,7 @@ import com.vk.ui_kit.PlaylistItem
 import com.vk.ui_kit.VideoItem
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import com.vk.resources.R
 
 @Composable
 fun VideoPlaylistScreen(
@@ -56,31 +64,42 @@ fun VideoPlaylistScreen(
 fun VideoPlaylistScreen(
     modifier: Modifier = Modifier,
     isLoading: Boolean,
-    videoList: List<Video>,
+    videoList: List<Video> = listOf(),
+    errorStringRes: Int? = null,
     onItemClick: (String) -> Unit = {},
     onReload: () -> Unit = {}
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
 
     PullToRefreshBox(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         state = pullToRefreshState,
         isRefreshing = isLoading,
         onRefresh = onReload,
     ) {
-        LazyColumn(Modifier.fillMaxSize()) {
-            items(videoList) { item ->
+        if (errorStringRes != null) {
+            Column(
+                modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = stringResource(errorStringRes))
+            }
+        } else {
+            LazyColumn(Modifier.fillMaxSize()) {
+                items(videoList) { item ->
 
-                PlaylistItem(
-                    videoItem = VideoItem(
-                        id = item.id,
-                        title = item.title,
-                        duration = item.duration,
-                        previewUrl = item.previewUrl,
-                        videoUrl = item.videoUrl
-                    ),
-                    onClick = { onItemClick(item.videoUrl) }
-                )
+                    PlaylistItem(
+                        videoItem = VideoItem(
+                            id = item.id,
+                            title = item.title,
+                            duration = item.duration,
+                            previewUrl = item.previewUrl,
+                            videoUrl = item.videoUrl
+                        ),
+                        onClick = { onItemClick(item.videoUrl) }
+                    )
+                }
             }
         }
     }
@@ -88,7 +107,7 @@ fun VideoPlaylistScreen(
 
 @Preview
 @Composable
-fun VideoPlaylistScreenPreview() {
+fun VideoPlaylistScreenListPreview() {
     VideoPlayerTheme {
         VideoPlaylistScreen(
             isLoading = true,
@@ -100,7 +119,18 @@ fun VideoPlaylistScreenPreview() {
                     previewUrl = "",
                     videoUrl = ""
                 )
-            )
+            ),
+        )
+    }
+}
+
+@Preview
+@Composable
+fun VideoPlaylistScreenErrorPreview() {
+    VideoPlayerTheme {
+        VideoPlaylistScreen(
+            isLoading = false,
+            errorStringRes = R.string.no_internet_error
         )
     }
 }

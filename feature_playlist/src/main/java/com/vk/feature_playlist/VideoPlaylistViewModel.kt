@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.vk.common.presentation.BaseViewModel
 import com.vk.common.utils.isInternetAvailable
 import com.vk.domain.usecase.SaveSessionUseCase
+import com.vk.domain.utils.CustomResult
+import com.vk.feature_playlist.utils.toStringRes
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 
@@ -24,8 +26,15 @@ class VideoPlaylistViewModel @Inject constructor(
 
     private fun loadVideo() = viewModelScope.launch {
         getPlaylistUseCase.invoke(GetPlaylistUseCase.Params(isInternetAvailable(context)))
-            .collect { videoList ->
-                setState { copy(isLoading = false, videoList = videoList) }
+            .collect { result ->
+                when(result) {
+                    is CustomResult.Success -> {
+                        setState { copy(isLoading = false, videoList = result.data ?: listOf()) }
+                    }
+                    is CustomResult.Error -> {
+                        setState { copy(isLoading = false, errorStringRes = result.issueType?.toStringRes()) }
+                    }
+                }
             }
     }
 

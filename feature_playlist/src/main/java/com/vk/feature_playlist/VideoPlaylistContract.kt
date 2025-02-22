@@ -13,7 +13,8 @@ class VideoPlaylistContract {
 
     data class State(
         val isLoading: Boolean = true,
-        val videoList: List<Video> = emptyList()
+        val videoList: List<Video> = emptyList(),
+        val errorStringRes: Int? = null
     ) : UiState
 
     sealed class Effect : UiEffect {
