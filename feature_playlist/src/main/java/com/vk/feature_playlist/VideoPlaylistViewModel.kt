@@ -1,36 +1,45 @@
 package com.vk.feature_playlist
 
+import android.content.Context
 import com.vk.domain.usecase.GetPlaylistUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.vk.common.presentation.BaseViewModel
+import com.vk.common.utils.isInternetAvailable
 import com.vk.domain.usecase.SaveSessionUseCase
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class VideoPlaylistViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val getPlaylistUseCase: GetPlaylistUseCase,
     private val saveSessionUseCase: SaveSessionUseCase,
-): BaseViewModel<VideoPlaylistContract.Event, VideoPlaylistContract.State, VideoPlaylistContract.Effect>() {
+) : BaseViewModel<VideoPlaylistContract.Event, VideoPlaylistContract.State, VideoPlaylistContract.Effect>() {
 
     init {
         loadVideo()
     }
 
     private fun loadVideo() = viewModelScope.launch {
-        val videoList = getPlaylistUseCase.invoke(GetPlaylistUseCase.Params())
-        setState { copy(isLoading = false, videoList = videoList) }
+        getPlaylistUseCase.invoke(GetPlaylistUseCase.Params(isInternetAvailable(context)))
+            .collect { videoList ->
+                setState { copy(isLoading = false, videoList = videoList) }
+            }
     }
 
     override fun createInitialState() = VideoPlaylistContract.State()
 
     override fun handleEvent(event: VideoPlaylistContract.Event) {
-        when(event) {
+        when (event) {
             is VideoPlaylistContract.Event.OnVideoClicked -> {
                 saveVideoPath(event.videoUrl)
             }
-            is VideoPlaylistContract.Event.OnReload -> { loadVideo() }
+
+            is VideoPlaylistContract.Event.OnReload -> {
+                loadVideo()
+            }
         }
     }
 

@@ -1,18 +1,30 @@
 package com.vk.data.player.repository
 
+import com.vk.data.player.datasource.local.dao.VideoPlayerDao
 import com.vk.data.player.datasource.remote.api.VideoApi
 import com.vk.data.player.mappers.toVideo
+import com.vk.data.player.mappers.toVideoEntity
 import com.vk.domain.model.Video
 import com.vk.domain.repository.PlaylistRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
 class PlaylistRepositoryImpl @Inject constructor(
-    private val videoApi: VideoApi
+    private val videoApi: VideoApi,
+    private val localSource: VideoPlayerDao
 ): PlaylistRepository {
 
-    override suspend fun getPlaylist(): List<Video> {
-        val response = videoApi.getVideos()
-        return response.awaitResponse().body()?.map { it.toVideo() } ?: emptyList()
+    override suspend fun getPlaylist(withSync: Boolean): Flow<List<Video>> = withContext(Dispatchers.IO) {
+        if (withSync) {
+            val response = videoApi.getVideos()
+            val list = response.awaitResponse().body()?.map { it.toVideoEntity() } ?: emptyList()
+            localSource.clearCache()
+            localSource.saveVideoPlaylist(list)
+        }
+        return@withContext localSource.getVideoPlaylist().map { videoList -> videoList.map { it.toVideo() } }
     }
 }
