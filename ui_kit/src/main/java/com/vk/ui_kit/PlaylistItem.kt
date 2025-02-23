@@ -21,10 +21,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.vk.resources.theme.LocalDimension
 import com.vk.resources.theme.LocalTextDim
 import com.vk.resources.theme.VideoPlayerTheme
+import com.vk.resources.R
 
 @Composable
 fun PlaylistItem(
@@ -50,9 +52,9 @@ fun PlaylistItem(
                 .data(videoItem.previewUrl)
                 .crossfade(true)
                 .build(),
-            //placeholder = painterResource(id = R.drawable.ic_placeholer),
+            placeholder = painterResource(id = R.drawable.ic_placeholder),
             contentDescription = null,
-            //error = painterResource(id = R.drawable.ic_placeholer),
+            error = painterResource(id = R.drawable.ic_placeholder),
         )
 
         Column(modifier = Modifier.padding(horizontal = LocalDimension.current.spaceSize8)) {
