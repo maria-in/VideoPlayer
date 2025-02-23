@@ -3,6 +3,7 @@ package com.vk.feature_playlist
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -28,6 +29,7 @@ import com.vk.ui_kit.VideoItem
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.vk.resources.R
+import com.vk.resources.theme.LocalDimension
 
 @Composable
 fun VideoPlaylistScreen(
@@ -85,11 +87,20 @@ fun VideoPlaylistScreen(
             ) {
                 Text(text = stringResource(errorStringRes))
             }
+        } else if(videoList.isEmpty()) {
+            Column(
+                modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = stringResource(R.string.empty_list_error))
+            }
         } else {
             LazyColumn(Modifier.fillMaxSize()) {
                 items(videoList) { item ->
 
                     PlaylistItem(
+                        modifier = Modifier.padding(horizontal = LocalDimension.current.spaceSize12),
                         videoItem = VideoItem(
                             id = item.id,
                             title = item.title,
