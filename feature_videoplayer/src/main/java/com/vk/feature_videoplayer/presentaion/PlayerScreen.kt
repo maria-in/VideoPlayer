@@ -65,6 +65,12 @@ fun PlayerScreen(
 
                     Lifecycle.Event.ON_RESUME -> {
                         it.onResume()
+                        it.player?.play()
+                    }
+
+                    Lifecycle.Event.ON_STOP -> {
+                        it.onPause()
+                        it.player?.pause()
                     }
 
                     else -> Unit
