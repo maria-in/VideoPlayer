@@ -25,6 +25,7 @@ class VideoPlaylistViewModel @Inject constructor(
     }
 
     private fun loadVideo() = viewModelScope.launch {
+        setState { copy(isLoading = true) }
         getPlaylistUseCase.invoke(GetPlaylistUseCase.Params(isInternetAvailable(context)))
             .collect { result ->
                 when(result) {
