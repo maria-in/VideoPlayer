@@ -13,6 +13,8 @@ android {
     defaultConfig {
         minSdk = 26
 
+        buildConfigField("String", "VIDEO_BASE_URL", "\"http://localhost/\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -65,4 +67,5 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
 
     implementation(project(":domain"))
+    implementation(project(":common"))
 }

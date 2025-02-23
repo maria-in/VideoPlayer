@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.vk.common.utils.Constants
 import com.vk.data.player.datasource.local.dao.VideoPlayerDao
 import com.vk.data.player.datasource.local.model.VideoItemEntity
 
@@ -27,7 +28,7 @@ fun VideoPlayerDatabase(applicationContext: Context): VideoPlayerDatabase {
     val rateTrackerDatabase = Room.databaseBuilder(
         checkNotNull(applicationContext.applicationContext),
         VideoPlayerRoomDatabase::class.java,
-        "video_player_db"
+        Constants.VIDEO_PLAYER_DB
     ).build()
     return VideoPlayerDatabase(rateTrackerDatabase)
 }
